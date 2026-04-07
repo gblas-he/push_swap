@@ -15,7 +15,6 @@
 void	adaptive(t_node **a, t_data *data)
 {
 	int		size;
-	double	disorder;
 
 	size = lst_size(*a);
 	if (size <= 10)
@@ -26,7 +25,7 @@ void	adaptive(t_node **a, t_data *data)
 	{
 		if (data->disorder < 0.2)
 			simple_alg(a, data);
-		else if (data->disorder >= 0.2 && disorder < 0.5)
+		else if (data->disorder >= 0.2 && data->disorder < 0.5)
 			medium_alg(a, data);
 		else
 			complex_alg(a, data);
@@ -51,7 +50,6 @@ int	isordered(t_node **stack_a)
 void	push_swap(t_node **stack_a, t_data *data)
 {
 	data->disorder = compute_disorder(stack_a);
-
 	if (isordered(stack_a))
 	{
 		if (data->bench)
