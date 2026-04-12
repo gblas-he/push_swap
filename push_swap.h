@@ -16,16 +16,18 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
-# include <stdio.h>
 # include <stdarg.h>
+# include <stdio.h>
 
+// stack nodes
 typedef struct s_node
 {
+	struct s_node	*next;
 	int				value;
 	int				idx;
-	struct s_node	*next;
 }	t_node;
 
+// operations count
 typedef struct s_bench
 {
 	int	sa;
@@ -42,15 +44,16 @@ typedef struct s_bench
 	int	total_ops;
 }	t_bench;
 
+// algorithm and stack data
 typedef struct s_algdata
 {
 	t_bench	*bm;
+	void	*arr;
+	char	*strategy;
 	size_t	size;
 	double	disorder;
 	int		bench;
 	int		arr_type;
-	char	*strategy;
-	void	*arr;
 }	t_data;
 
 char		*select_strategy(char *s);
