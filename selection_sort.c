@@ -58,7 +58,7 @@ void	selection_sort(t_node **a, t_node **b, t_data *data)
 		if (!isordered(a))
 			pb(a, b, data);
 		else
-			break;
+			break ;
 	}
 	while (*b)
 		pa(a, b, data);
