@@ -13,6 +13,7 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
+# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
@@ -62,7 +63,7 @@ int			count_flags(int ac, char **av);
 void		check_flag(int *flag, int *f_count);
 void		parse_args(t_data **data, int ac, char **av);
 t_data		*fill_alg_data(void *nums_array, int type, int len);
-void		*fill_nums_arr(int ac, int flags, char **av, int *len);
+void		*fill_nums_arr(int ac, int flags, char **av, size_t *len);
 int			*nums_array(char **av, int ac);
 void		fill_stack_from_arr(t_node **lst, t_data *data);
 void		fill_from_string_array(t_node **lst, t_data *data);
@@ -79,7 +80,7 @@ void		ft_printdouble(double n);
 int			fill_arr(char **arr, char *str, char c);
 int			count_args(char *s);
 int			safe_malloc(char **arr, int pos, size_t len);
-char		**ft_split(char *str, char c, int *len);
+char		**ft_split(char *str, char c, size_t *len);
 void		print_err(void);
 void		check_args(char **av, int ac);
 void		check_str(char *str);

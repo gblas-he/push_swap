@@ -17,7 +17,7 @@ void	parse_args(t_data **data, int ac, char **av)
 	void	*nums;
 	int		flags_count;
 	int		bench;
-	int		len;
+	size_t	len;
 	char	*strategy;
 
 	bench = 0;
@@ -28,6 +28,8 @@ void	parse_args(t_data **data, int ac, char **av)
 	else
 		parse_flags(flags_count, av, &bench, &strategy);
 	nums = fill_nums_arr(ac - 1 - flags_count, flags_count, av, &len);
+	if (nums == NULL)
+		return ;
 	if (ac - flags_count == 2)
 		*data = fill_alg_data(nums, 0, len);
 	else
@@ -39,7 +41,7 @@ void	parse_args(t_data **data, int ac, char **av)
 	(*data)->bm = init_bench();
 }
 
-void	*fill_nums_arr(int ac, int flags, char **av, int *len)
+void	*fill_nums_arr(int ac, int flags, char **av, size_t *len)
 {
 	char	**arr;
 	int		*nums_arr;
@@ -48,8 +50,11 @@ void	*fill_nums_arr(int ac, int flags, char **av, int *len)
 	{
 		check_str(*(av + 1 + flags));
 		arr = ft_split(*(av + 1 + flags), ' ', len);
-		if (arr == NULL)
+		if (arr == NULL || *len == 1)
+		{
+			free_str_arr(arr, *len);
 			return (NULL);
+		}
 		return (arr);
 	}
 	else

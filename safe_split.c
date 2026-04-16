@@ -83,7 +83,7 @@ int	safe_malloc(char **arr, int pos, size_t len)
 	return (0);
 }
 
-char	**ft_split(char *str, char c, int *words)
+char	**ft_split(char *str, char c, size_t *words)
 {
 	char	**arr;
 

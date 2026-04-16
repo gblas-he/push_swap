@@ -79,6 +79,8 @@ int	main(int ac, char *av[])
 	if (ac == 1)
 		return (0);
 	parse_args(&data, ac, av);
+	if (data == NULL)
+		return (0);
 	fill_stack_from_arr(&stack_a, data);
 	check_repeated_or_unique(&stack_a, data);
 	if (stack_a)
