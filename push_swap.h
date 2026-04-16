@@ -84,7 +84,7 @@ char		**ft_split(char *str, char c, size_t *len);
 void		print_err(void);
 void		check_args(char **av, int ac);
 void		check_str(char *str);
-void		check_repeated_or_unique(t_node **lst, t_data *data);
+void		check_repeated(t_node **lst, t_data *data);
 size_t		ft_strlcpy(char *dst, char *src, size_t size);
 int			is_plus_or_min(int c);
 int			ft_isdigit(int c);

@@ -82,7 +82,7 @@ int	main(int ac, char *av[])
 	if (data == NULL)
 		return (0);
 	fill_stack_from_arr(&stack_a, data);
-	check_repeated_or_unique(&stack_a, data);
+	check_repeated(&stack_a, data);
 	if (stack_a)
 	{
 		index_list(&stack_a);
