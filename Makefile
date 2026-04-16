@@ -23,7 +23,7 @@ NAME = push_swap
 
 CC = cc
 
-CCFLAGS = -Wall -Wextra -Werror
+CCFLAGS = -Wall -Wextra -Werror -g3
 
 LIBFLAG = -I.
 
