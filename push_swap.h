@@ -20,15 +20,14 @@
 # include <stdarg.h>
 # include <stdio.h>
 
-// stack nodes
-typedef struct s_node
+// Array Type Enum 
+enum e_arrtype
 {
-	struct s_node	*next;
-	int				value;
-	int				idx;
-}	t_node;
+	CHAR,
+	INT
+};
 
-// operations count
+// Operations count
 typedef struct s_bench
 {
 	int	sa;
@@ -48,21 +47,29 @@ typedef struct s_bench
 // algorithm and stack data
 typedef struct s_algdata
 {
-	t_bench	*bm;
-	void	*arr;
-	char	*strategy;
-	size_t	size;
-	double	disorder;
-	int		bench;
-	int		arr_type;
+	t_bench			*bm;
+	void			*arr;
+	char			*strategy;
+	size_t			size;
+	double			disorder;
+	int				bench;
+	enum e_arrtype	arr_type;
 }	t_data;
+
+// Stack nodes
+typedef struct s_node
+{
+	struct s_node	*next;
+	int				value;
+	int				idx;
+}	t_node;
 
 char		*select_strategy(char *s);
 void		parse_flags(int f_count, char **av, int *bench, char **strategy);
 int			count_flags(int ac, char **av);
 void		check_flag(int *flag, int *f_count);
 void		parse_args(t_data **data, int ac, char **av);
-t_data		*fill_alg_data(void *nums_array, int type, int len);
+t_data		*fill_alg_data(void *nums_array, enum e_arrtype type, int len);
 void		*fill_nums_arr(int ac, int flags, char **av, size_t *len);
 int			*nums_array(char **av, int ac);
 void		fill_stack_from_arr(t_node **lst, t_data *data);

@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-t_data	*fill_alg_data(void *nums_array, int type, int len)
+t_data	*fill_alg_data(void *nums_array, enum e_arrtype type, int len)
 {
 	t_data	*data;
 
