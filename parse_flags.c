@@ -11,36 +11,34 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
 
-void	parse_flags(int f_count, char **av, int *bench, char **strategy)
+void	parse_flags(int f_count, char **av, t_data *data)
 {
 	int	i;
-	int	b_flag;
 	int	s_flag;
 
-	b_flag = 0;
 	s_flag = 0;
 	i = 1;
 	while (f_count > 0)
 	{
 		if (f_count > 0 && !ft_strncmp("--bench", av[i], 7))
 		{
-			*bench = 1;
-			check_flag(&b_flag, &f_count);
+			check_flag(&data->bench, &f_count, &data);
 			i++;
 			if (!f_count && !s_flag)
-				*strategy = "adaptive";
+				data->strategy = "adaptive";
 		}
 		if (f_count > 0 && !ft_strncmp("--", av[i], 2))
 		{
-			*strategy = select_strategy(av[i]);
-			check_flag(&s_flag, &f_count);
+			check_flag(&s_flag, &f_count, &data);
+			data->strategy = select_strategy(av[i], data);
 			i++;
 		}
 	}
 }
 
-char	*select_strategy(char *s)
+char	*select_strategy(char *s, t_data *data)
 {
 	int	i;
 
@@ -54,7 +52,10 @@ char	*select_strategy(char *s)
 	else if (!ft_strncmp(s + i, "adaptive", 9))
 		return (s + 2);
 	else
+	{
+		free(data);
 		print_err();
+	}
 	return (NULL);
 }
 
@@ -65,6 +66,8 @@ int	count_flags(int ac, char **av)
 
 	i = 1;
 	flags = 0;
+	if (!av[2])
+		print_err();
 	while (i < ac - 1)
 	{
 		if (av[i][0] == '-' && ft_isdigit(av[i][1]))
@@ -80,10 +83,13 @@ int	count_flags(int ac, char **av)
 	return (flags);
 }
 
-void	check_flag(int *flag, int *f_count)
+void	check_flag(int *flag, int *f_count, t_data **data)
 {
 	if (*flag)
+	{
+		free(*data);
 		print_err();
+	}
 	else
 	{
 		*flag = 1;

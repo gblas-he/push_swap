@@ -64,12 +64,12 @@ typedef struct s_node
 	int				idx;
 }	t_node;
 
-char		*select_strategy(char *s);
-void		parse_flags(int f_count, char **av, int *bench, char **strategy);
+char		*select_strategy(char *s, t_data *data);
+void		parse_flags(int f_count, char **av, t_data *data);
 int			count_flags(int ac, char **av);
-void		check_flag(int *flag, int *f_count);
+void		check_flag(int *flag, int *f_count, t_data **data);
 void		parse_args(t_data **data, int ac, char **av);
-t_data		*fill_alg_data(void *nums_array, enum e_arrtype type, int len);
+void		fill_alg_data(t_data **data, void *nums_array, enum e_arrtype type, int len);
 void		*fill_nums_arr(int ac, int flags, char **av, size_t *len);
 int			*nums_array(char **av, int ac);
 void		fill_stack_from_arr(t_node **lst, t_data *data);

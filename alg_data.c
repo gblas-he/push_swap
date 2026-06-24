@@ -12,19 +12,13 @@
 
 #include "push_swap.h"
 
-t_data	*fill_alg_data(void *nums_array, enum e_arrtype type, int len)
+void	fill_alg_data(t_data **data, void *nums_array, enum e_arrtype type, int len)
 {
-	t_data	*data;
-
-	data = malloc(sizeof(t_data));
-	if (data == NULL)
-		return (NULL);
-	data->arr_type = type;
-	data->arr = nums_array;
-	data->size = len;
-	data->disorder = 0;
-	data->bm = NULL;
-	return (data);
+	(*data)->arr_type = type;
+	(*data)->arr = nums_array;
+	(*data)->size = len;
+	(*data)->disorder = 0;
+	(*data)->bm = init_bench();
 }
 
 void	fill_stack_from_arr(t_node **lst, t_data *data)

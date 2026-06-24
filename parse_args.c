@@ -11,34 +11,36 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 void	parse_args(t_data **data, int ac, char **av)
 {
 	void	*nums;
 	int		flags_count;
-	int		bench;
 	size_t	len;
-	char	*strategy;
 
-	bench = 0;
 	len = 0;
 	flags_count = count_flags(ac, av);
-	if (!flags_count)
-		strategy = "adaptive";
+	*data = malloc(sizeof(t_data));
+	if (*data == NULL)
+		return ;
+	if (flags_count)
+		parse_flags(flags_count, av, *data);
 	else
-		parse_flags(flags_count, av, &bench, &strategy);
+		(*data)->strategy = "adaptive";
 	nums = fill_nums_arr(ac - 1 - flags_count, flags_count, av, &len);
 	if (nums == NULL)
+	{
+		free(*data);
+		*data = NULL;
 		return ;
+	}
 	if (ac - flags_count == 2)
-		*data = fill_alg_data(nums, 0, len);
+		fill_alg_data(data, nums, 0, len);
 	else
-		*data = fill_alg_data(nums, 1, len);
-	if (*data == NULL)
-		print_err();
-	(*data)->bench = bench;
-	(*data)->strategy = strategy;
-	(*data)->bm = init_bench();
+		fill_alg_data(data, nums, 1, len);
 }
 
 void	*fill_nums_arr(int ac, int flags, char **av, size_t *len)
