@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void	check_str(char *str)
+void	check_str(char *str, t_data *data)
 {
 	int	i;
 
@@ -22,23 +22,23 @@ void	check_str(char *str)
 		if (is_plus_or_min(str[i]) || ft_isdigit(str[i]) || str[i] == ' ')
 		{
 			if (is_plus_or_min(str[i]) && !ft_isdigit(str[i + 1]))
-				print_err();
+				free_all(data, NULL, 1);
 			else
 				i++;
 		}
 		else
-			print_err();
+			free_all(data, NULL, 1);
 	}
 }
 
-void	check_args(char **av, int ac)
+void	check_args(char **av, int ac, t_data *data)
 {
 	int	i;
 
 	i = 1;
 	while (i < ac)
 	{
-		check_str(av[i]);
+		check_str(av[i], data);
 		i++;
 	}
 }
@@ -55,12 +55,7 @@ void	check_repeated(t_node **lst, t_data *data)
 		while (j_node != NULL)
 		{
 			if (j_node->value == i_node->value)
-			{
-				free_lst(lst);
-				free(data->bm);
-				free(data);
-				print_err();
-			}
+				free_all(data, *lst, 1);
 			j_node = j_node->next;
 		}
 		i_node = i_node->next;

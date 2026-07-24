@@ -11,59 +11,49 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-void	parse_args(t_data **data, int ac, char **av)
+void	*parse_args(char **av, t_data *data)
 {
 	void	*nums;
-	int		flags_count;
-	size_t	len;
+	int		args_count;
 
-	len = 0;
-	flags_count = count_flags(ac, av);
-	*data = malloc(sizeof(t_data));
-	if (*data == NULL)
-		return ;
-	if (flags_count)
-		parse_flags(flags_count, av, *data);
+	args_count = count_args(av);
+	nums = fill_nums_arr(args_count, av, data);
+	if (args_count == 1)
+		data->arr_type = CHAR;
 	else
-		(*data)->strategy = "adaptive";
-	nums = fill_nums_arr(ac - 1 - flags_count, flags_count, av, &len);
-	if (nums == NULL)
-	{
-		free(*data);
-		*data = NULL;
-		return ;
-	}
-	if (ac - flags_count == 2)
-		fill_alg_data(data, nums, 0, len);
-	else
-		fill_alg_data(data, nums, 1, len);
+		data->arr_type = INT;
+	return (nums);
 }
 
-void	*fill_nums_arr(int ac, int flags, char **av, size_t *len)
+int	count_args(char **av)
+{
+	int	i;
+
+	i = 0;
+	while (av[i])
+		i++;
+	return (i);
+}
+
+void	*fill_nums_arr(int ac, char **av, t_data *data)
 {
 	char	**arr;
 	int		*nums_arr;
 
 	if (ac == 1)
 	{
-		check_str(*(av + 1 + flags));
-		arr = ft_split(*(av + 1 + flags), ' ', len);
-		if (arr == NULL || *len == 1)
-		{
-			free_str_arr(arr, *len);
+		check_str(*(av), data);
+		arr = ft_split(*(av), ' ', &data->size);
+		if (arr == NULL)
 			return (NULL);
-		}
 		return (arr);
 	}
 	else
 	{
-		check_args(&av[flags + 1], ac);
-		nums_arr = nums_array(&av[flags + 1], ac);
-		*len = ac;
+		check_args(&av[0], ac, data);
+		nums_arr = nums_array(&av[0], ac);
+		data->size = ac;
 		if (nums_arr == NULL)
 			return (NULL);
 		return (nums_arr);

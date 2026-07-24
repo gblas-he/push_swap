@@ -11,88 +11,100 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
-void	parse_flags(int f_count, char **av, t_data *data)
+char	**parse_flags(char **av, t_data *data)
 {
+	int	flags_count;
 	int	i;
-	int	s_flag;
 
-	s_flag = 0;
-	i = 1;
-	while (f_count > 0)
+	flags_count = count_flags(av, data);
+	i = 0;
+	if (!flags_count)
+		data->strategy = select_strategy("--adaptive", data);
+	while (flags_count > 0)
 	{
-		if (f_count > 0 && !ft_strncmp("--bench", av[i], 7))
+		if (flags_count > 0 && !ft_strncmp("--bench", av[i], 7))
 		{
-			check_flag(&data->bench, &f_count, &data);
+			check_flag(&flags_count, &data, BENCH);
 			i++;
-			if (!f_count && !s_flag)
-				data->strategy = "adaptive";
+			if (!flags_count && !data->s_flag)
+				data->strategy = select_strategy("--adaptive", data);
 		}
-		if (f_count > 0 && !ft_strncmp("--", av[i], 2))
+		if (flags_count > 0 && !ft_strncmp("--", av[i], 2))
 		{
-			check_flag(&s_flag, &f_count, &data);
+			check_flag(&flags_count, &data, STRATEGY);
 			data->strategy = select_strategy(av[i], data);
 			i++;
 		}
 	}
+	return (av + i);
 }
 
 char	*select_strategy(char *s, t_data *data)
 {
-	int	i;
-
-	i = 2;
-	if (!ft_strncmp(s + i, "simple", 7))
-		return (s + 2);
-	else if (!ft_strncmp(s + i, "medium", 7))
-		return (s + 2);
-	else if (!ft_strncmp(s + i, "complex", 8))
-		return (s + 2);
-	else if (!ft_strncmp(s + i, "adaptive", 9))
-		return (s + 2);
+	s += 2;
+	if (!ft_strncmp(s, "simple", 9))
+		data->strategy = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	else if (!ft_strncmp(s, "medium", 9))
+		data->strategy = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	else if (!ft_strncmp(s, "complex", 10))
+		data->strategy = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	else if (!ft_strncmp(s, "adaptive", 11))
+		data->strategy = malloc(sizeof(char) * (ft_strlen(s) + 1));
 	else
-	{
-		free(data);
-		print_err();
-	}
-	return (NULL);
+		free_all(data, NULL, 1);
+	if (data->strategy == NULL)
+		return (NULL);
+	ft_strlcpy(data->strategy, s, ft_strlen(s) + 1);
+	return (data->strategy);
 }
 
-int	count_flags(int ac, char **av)
+int	count_flags(char **av, t_data *data)
 {
 	int	i;
 	int	flags;
 
-	i = 1;
+	i = 0;
 	flags = 0;
-	if (!av[2])
-		print_err();
-	while (i < ac - 1)
+	while (av[i])
 	{
+		if (ft_isdigit(av[i][0]))
+			break ;
 		if (av[i][0] == '-' && ft_isdigit(av[i][1]))
 			break ;
 		else if (av[i][0] == '-' && ft_isalpha(av[i][1]))
-			print_err();
+			free_all(data, NULL, 1);
+		else if (ft_isalpha(av[i][0]))
+			free_all(data, NULL, 1);
 		else if (av[i][0] == '-' && av[i][1] == '-')
 			flags++;
 		else if (av[i][0] == '-' && av[i][1] == '\0')
-			print_err();
+			free_all(data, NULL, 1);
 		i++;
 	}
 	return (flags);
 }
 
-void	check_flag(int *flag, int *f_count, t_data **data)
+void	check_flag(int *f_count, t_data **data, enum e_flag flag)
 {
-	if (*flag)
+	if (flag == BENCH)
 	{
-		free(*data);
-		print_err();
+		if ((*data)->bench)
+			free_all(*data, NULL, 1);
+		else
+		{
+			(*data)->bench = 1;
+			*f_count -= 1;
+		}
 	}
 	else
 	{
-		*flag = 1;
-		*f_count -= 1;
+		if ((*data)->s_flag)
+			free_all(*data, NULL, 1);
+		else
+		{
+			(*data)->s_flag = 1;
+			*f_count -= 1;
+		}
 	}
 }

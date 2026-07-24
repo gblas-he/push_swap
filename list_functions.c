@@ -50,12 +50,6 @@ void	lst_addback(t_node **lst, t_node *new_node)
 	}
 }
 
-void	lst_addfront(t_node **lst, t_node *new)
-{
-	new->next = *lst;
-	*lst = new;
-}
-
 int	lst_size(t_node *lst)
 {
 	int		count;

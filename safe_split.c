@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	count_args(char *s)
+int	count_nums(char *s)
 {
 	int	args;
 	int	i;
@@ -87,7 +87,7 @@ char	**ft_split(char *str, char c, size_t *words)
 {
 	char	**arr;
 
-	*words = count_args(str);
+	*words = count_nums(str);
 	arr = malloc((*words + 1) * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);

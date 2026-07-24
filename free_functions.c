@@ -39,3 +39,17 @@ void	free_lst(t_node **lst)
 	}
 	*lst = NULL;
 }
+
+void	free_all(t_data *data, t_node *stack, int x)
+{
+	if (data != NULL)
+	{
+		free(data->strategy);
+		free(data->bm);
+		free(data);
+	}
+	if (stack != NULL)
+		free_lst(&stack);
+	if (x)
+		print_err();
+}

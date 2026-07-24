@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <unistd.h>
 
 void	adaptive(t_node **a, t_data *data)
 {
@@ -50,6 +49,8 @@ int	isordered(t_node **stack_a)
 
 void	push_swap(t_node **stack_a, t_data *data)
 {
+	check_repeated(stack_a, data);
+	index_list(stack_a);
 	data->disorder = compute_disorder(stack_a);
 	if (isordered(stack_a))
 	{
@@ -74,23 +75,25 @@ int	main(int ac, char *av[])
 {
 	t_data	*data;
 	t_node	*stack_a;
+	void	*nums;
 
-	data = NULL;
-	stack_a = NULL;
-	if (ac == 1)
-		return (0);
-	parse_args(&data, ac, av);
+	data = init_data();
 	if (data == NULL)
 		return (0);
-	fill_stack_from_arr(&stack_a, data);
-	check_repeated(&stack_a, data);
-	if (stack_a)
+	stack_a = NULL;
+	if (ac != 1)
 	{
-		index_list(&stack_a);
-		push_swap(&stack_a, data);
-		free_lst(&stack_a);
+		av = parse_flags(av + 1, data);
+		if (data == NULL || data->strategy == NULL)
+			return (0);
+		nums = parse_args(av, data);
+		if (nums)
+		{
+			stack_a = init_stack(data, nums);
+			if (stack_a)
+				push_swap(&stack_a, data);
+		}
+		free_all(data, stack_a, 0);
 	}
-	free(data->bm);
-	free(data);
 	return (0);
 }
